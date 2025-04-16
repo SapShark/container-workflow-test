@@ -22,13 +22,13 @@ jobs:
       run: |
         docker build -t my-custom-ubuntu-image:latest .
     - name: Run Jit CLI Scan
-        env:
-          # Needed for communicating Jit BE
-          JIT_CLIENT_ID: ${{ secrets.JIT_CLIENT_ID }}
-          JIT_SECRET_KEY: ${{ secrets.JIT_SECRET_KEY }}
-        run: |
-          ./jit-cli container \
-            --image my-custom-ubuntu-image:latest \
-            --tracking-name my-ubuntu-test-image \
-            --fail-on-findings \
-            --add-to-backlog
+      env:
+        # Needed for communicating Jit BE
+        JIT_CLIENT_ID: ${{ secrets.JIT_CLIENT_ID }}
+        JIT_SECRET_KEY: ${{ secrets.JIT_SECRET_KEY }}
+      run: |
+        ./jit-cli container \
+          --image my-custom-ubuntu-image:latest \
+          --tracking-name my-ubuntu-test-image \
+          --fail-on-findings \
+          --add-to-backlog
