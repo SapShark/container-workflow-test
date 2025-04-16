@@ -19,7 +19,7 @@ jobs:
         chmod +x jit-cli
 
     - name: Pull DVWA image
-      run: docker pull vulnerables/web-dvwa
+      run: docker pull vulnerables/web-dvwa:latest
 
     - name: Run Jit CLI Scan
       env:
