@@ -12,7 +12,23 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3 # code repo code
+    - name: Install Dependencies & Jit CLI
+        run: |
+          sudo apt-get update && sudo apt-get install -y curl git
+          curl -L https://jit-cli.s3.us-east-1.amazonaws.com/jit-cli/latest/jit-cli-amd64-slim -o jit-cli
+          chmod +x jit-cli
 
     - name: Build Docker image
       run: |
         docker build -t my-custom-ubuntu-image:latest .
+    - name: Run Jit CLI Scan
+        env:
+          # Needed for communicating Jit BE
+          JIT_CLIENT_ID: ${{ secrets.JIT_CLIENT_ID }}
+          JIT_SECRET_KEY: ${{ secrets.JIT_SECRET_KEY }}
+        run: |
+          ./jit-cli container \
+            --image my-custom-ubuntu-image:latest \
+            --tracking-name my-ubuntu-test-image \
+            --fail-on-findings \
+            --add-to-backlog
