@@ -18,9 +18,9 @@ jobs:
         curl -L https://jit-cli.s3.us-east-1.amazonaws.com/jit-cli/latest/jit-cli-amd64-slim -o jit-cli
         chmod +x jit-cli
 
-    - name: Build Docker image
-      run: |
-        docker build -t my-custom-ubuntu-image:latest .
+    - name: Pull DVWA image
+      run: docker pull vulnerables/web-dvwa
+
     - name: Run Jit CLI Scan
       env:
         # Needed for communicating Jit BE
@@ -28,7 +28,7 @@ jobs:
         JIT_SECRET_KEY: ${{ secrets.JIT_SECRET_KEY }}
       run: |
         ./jit-cli container \
-          --image my-custom-ubuntu-image:latest \
+          --image vulnerables/web-dvwa:latest \
           --tracking-name my-ubuntu-test-image \
           --fail-on-findings \
           --add-to-backlog
